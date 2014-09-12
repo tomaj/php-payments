@@ -27,18 +27,18 @@
             "SporoPay": "src/",
             "TatraPay": "src/",
             "WebPay": "src/",
-            "SporoPayPaymentHttpResponse": "lib/SLSP_SporoPay/",
-            "SporoPayPaymentRequest": "lib/SLSP_SporoPay/",
-            "CardPayPaymentHttpResponse": "lib/TB_CardPay/",
-            "CardPayPaymentRequest": "lib/TB_CardPay/",
-            "TatraPayPaymentHttpResponse": "lib/TB_TatraPay/",
-            "TatraPayPaymentRequest": "lib/TB_TatraPay/",
-            "UniPlatbaPaymentHttpResponse": "lib/UCB_UniPlatba/",
-            "UniPlatbaPaymentRequest": "lib/UCB_UniPlatba/",
-            "VeBpayPaymentHttpResponse": "lib/VB_VeBpay/",
-            "VeBpayPaymentRequest": "lib/VB_VeBpay/",
-            "EPlatbaPaymentHttpResponse": "lib/VUB_EPlatba2_HMAC/",
-            "EPlatbaPaymentRequest": "lib/VUB_EPlatba2_HMAC/"
+            "SporoPayPaymentHttpResponse": "src/lib/SLSP_SporoPay/",
+            "SporoPayPaymentRequest": "src/lib/SLSP_SporoPay/",
+            "CardPayPaymentHttpResponse": "src/lib/TB_CardPay/",
+            "CardPayPaymentRequest": "src/lib/TB_CardPay/",
+            "TatraPayPaymentHttpResponse": "src/lib/TB_TatraPay/",
+            "TatraPayPaymentRequest": "src/lib/TB_TatraPay/",
+            "UniPlatbaPaymentHttpResponse": "src/lib/UCB_UniPlatba/",
+            "UniPlatbaPaymentRequest": "src/lib/UCB_UniPlatba/",
+            "VeBpayPaymentHttpResponse": "src/lib/VB_VeBpay/",
+            "VeBpayPaymentRequest": "src/lib/VB_VeBpay/",
+            "EPlatbaPaymentHttpResponse": "src/lib/VUB_EPlatba2_HMAC/",
+            "EPlatbaPaymentRequest": "src/lib/VUB_EPlatba2_HMAC/"
         }
     }
 }
