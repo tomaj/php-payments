@@ -14,7 +14,7 @@ Installation
 The best way to install Tomaj/PHPpayemnts is using  [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require tomaj/php-payments:@dev
+$ composer require tomaj/php-payments
 ```
 
 Background
