@@ -17,9 +17,9 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with MONOGRAM EBanking libraries.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once dirname(dirname(__FILE__)).'/EPaymentDesSignedMessage.class.php';
+require_once dirname(dirname(__FILE__)).'/EPaymentAes256SignedMessage.class.php';
 
-class TatraPayPaymentRequest extends EPaymentDesSignedMessage implements IEPaymentHttpRedirectPaymentRequest {
+class TatraPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPaymentHttpRedirectPaymentRequest {
     const TatraPay_EPayment_URL_Base = "https://moja.tatrabanka.sk/cgi-bin/e-commerce/start/e-commerce.jsp";
     private $redirectUrlBase = self::TatraPay_EPayment_URL_Base;
 

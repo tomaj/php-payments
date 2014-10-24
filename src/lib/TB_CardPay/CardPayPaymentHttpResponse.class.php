@@ -17,51 +17,51 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with MONOGRAM EPayment libraries.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once dirname(dirname(__FILE__)).'/EPaymentDesSignedMessage.class.php';
+	require_once dirname(dirname(__FILE__)).'/EPaymentAes256SignedMessage.class.php';
 
-class CardPayPaymentHttpResponse extends EPaymentDesSignedMessage implements IEPaymentHttpPaymentResponse {
-	public function __construct($fields = null) {
-		$this->readOnlyFields = array('SS', 'VS', 'AC','RES', 'SIGN');
+	class CardPayPaymentHttpResponse extends EPaymentAes256SignedMessage implements IEPaymentHttpPaymentResponse {
+		public function __construct($fields = null) {
+			$this->readOnlyFields = array('SS', 'VS', 'AC','RES', 'SIGN');
 
-                    if ($fields == null) {
-                        $fields = $_GET;
-                    }
+                        if ($fields == null) {
+                            $fields = $_GET;
+                        }
 
-		$this->fields['VS'] = isset($fields['VS']) ? $fields['VS'] : null;
-		$this->fields['AC'] = isset($fields['AC']) ? $fields['AC'] : null;
-		$this->fields['RES'] = isset($fields['RES']) ? $fields['RES'] : null;
-		$this->fields['SIGN'] = isset($fields['SIGN']) ? $fields['SIGN'] : null;
-	}
-	
-	protected function validateData() {
-		if (isempty($this->VS)) return false;
-		if (!($this->RES == "FAIL" || $this->RES == "OK" || $this->RES == "TOUT")) return false;
+			$this->fields['VS'] = isset($fields['VS']) ? $fields['VS'] : null;
+			$this->fields['AC'] = isset($fields['AC']) ? $fields['AC'] : null;
+			$this->fields['RES'] = isset($fields['RES']) ? $fields['RES'] : null;
+			$this->fields['SIGN'] = isset($fields['SIGN']) ? $fields['SIGN'] : null;
+		}
 		
-		return true;
-	}
-
-	protected function getSignatureBase() {
-		return "{$this->VS}{$this->RES}{$this->AC}";
-	}
-
-protected $isVerified = false;
-	public function VerifySignature($password) {
-		if ($this->SIGN == $this->computeSign($password)) {
-			$this->isVerified = true;
+		protected function validateData() {
+			if (isempty($this->VS)) return false;
+			if (!($this->RES == "FAIL" || $this->RES == "OK" || $this->RES == "TOUT")) return false;
+			
 			return true;
 		}
-		return false;
-	}
 
-	public function GetPaymentResponse() {
-		if (!$this->isVerified)
-			throw new Exception(__METHOD__.": Message was not verified yet.");
+		protected function getSignatureBase() {
+			return "{$this->VS}{$this->RES}{$this->AC}";
+		}
 
-		if ($this->RES == "FAIL")
-			return IEPaymentHttpPaymentResponse::RESPONSE_FAIL;
-		else if ($this->RES == "OK")
-			return IEPaymentHttpPaymentResponse::RESPONSE_SUCCESS;
-		else
-			return null;
+    protected $isVerified = false;
+		public function VerifySignature($password) {
+			if ($this->SIGN == $this->computeSign($password)) {
+				$this->isVerified = true;
+				return true;
+			}
+			return false;
+		}
+
+		public function GetPaymentResponse() {
+			if (!$this->isVerified)
+				throw new Exception(__METHOD__.": Message was not verified yet.");
+
+			if ($this->RES == "FAIL")
+				return IEPaymentHttpPaymentResponse::RESPONSE_FAIL;
+			else if ($this->RES == "OK")
+				return IEPaymentHttpPaymentResponse::RESPONSE_SUCCESS;
+			else
+				return null;
+		}
 	}
-}
