@@ -20,9 +20,10 @@ class PayPal extends AbstractPayment
 	
 	protected $productName;
 	
-	public function __construct($amount = NULL, $variableSymbol = NULL, $returnUrl = NULL)
+
+	public function __construct($configArray, $amount = NULL, $variableSymbol = NULL, $returnUrl = NULL)
 	{
-		require dirname(__FILE__) . '/../../Monogram/PayPal/autoload.php';
+		$this->config = $configArray;
 		$this->init();
 		$this->amount = $amount;
 		$this->variableSymbol = $variableSymbol;
@@ -42,87 +43,27 @@ class PayPal extends AbstractPayment
 	}
 		
 	public function init() {
-		$this->config = \Nette\Environment::getConfig('paypal');
+			
 		$configArray = array(
-			'mode' => $this->config->mode,
-			'acct1.UserName' => $this->config->userName,
-			'acct1.Password' => $this->config->password,
-			'acct1.Signature' => $this->config->signature,
-			'http.ConnectionTimeOut' => $this->config->connectionTimeOut,
-			'http.Retry' => $this->config->retry,
-			'log.LogEnabled' => $this->config->logEnabled,
-			'log.FileName' => $this->config->fileName,
-			'log.LogLevel' => $this->config->logLevel,
+			'mode' => $this->config['mode'],
+			'acct1.UserName' => $this->config['userName'],
+			'acct1.Password' => $this->config['password'],
+			'acct1.Signature' => $this->config['signature'],
+			'http.ConnectionTimeOut' => $this->config['connectionTimeOut'],
+			'http.Retry' => $this->config['retry'],
+			'log.LogEnabled' => $this->config['ogEnabled'],
+			'log.FileName' => $this->config['fileName'],
+			'log.LogLevel' => $this->config['logLevel'],
 		);
 		
 		$this->service = new \PayPalAPIInterfaceServiceService($configArray);
-		if($this->config->mode == 'sandbox') {
+		if($this->config['mode'] == 'sandbox') {
 			$this->base = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
 		}
 		else {
 			$this->base = 'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
 		}
 	}
-	
-	/*protected function getPayKey() {
-		// create the receivers
-		$receivers = array();
-		
-		$AppReceiver = new Receiver();
-		$AppReceiver->email = $this->config->account;
-		$AppReceiver->amount = $this->amount;
-		$AppReceiver->paymentType = 'SERVICE';
-		$receivers[] = $AppReceiver;
-		
-		$receiverList = new ReceiverList($receivers);
-		
-		$payRequest = new PayRequest(new RequestEnvelope("en_US"), 'PAY', 'http://order.radiomed.mikoczy.monogram.sk/case/pay-now?cancel=1', 'EUR', $receiverList, 'http://order.radiomed.mikoczy.monogram.sk/case/pay-now?ok=1');
-		
-		$payRequest->ipnNotificationUrl = 'http://order.radiomed.mikoczy.monogram.sk/paypal/ipn';
-		$payRequest->trackingId = time();
-		$payRequest->memo = 'predplatne';
-		
-		//_ap-payment&paykey=
-		
-		try {
-			$response = $this->service->Pay($payRequest);
-			//var_dump($response);
-			return $response->payKey;
-		} catch(Exception $ex) {
-			require_once 'Common/Error.php';
-			exit;
-		}
-	}
-	
-	protected function setOptions($payKey) {
-		$setPaymentOptionsRequest = new SetPaymentOptionsRequest(new RequestEnvelope("en_US"));
-		$setPaymentOptionsRequest->payKey = $payKey;
-		
-		$receiverOptions = new ReceiverOptions();
-		$setPaymentOptionsRequest->receiverOptions[] = $receiverOptions;
-		$receiverOptions->invoiceData = new InvoiceData();
-		
-		$receiverId = new ReceiverIdentifier();
-		$receiverId->email = $this->config->account;
-		$receiverOptions->receiver = $receiverId;
-		
-		
-		
-		try {
-			$response = $this->service->SetPaymentOptions($setPaymentOptionsRequest);
-		} catch(Exception $ex) {
-			require_once 'Common/Error.php';
-			exit;
-		}
-	}
-	
-	public function request() {
-		$payKey = $this->getPayKey();
-		$this->setOptions($payKey);
-		
-		$redirectUrl = 'https://www.sandbox.paypal.com/webscr&cmd=_ap-payment&paykey=' . $payKey;
-		return $redirectUrl;
-	}*/
 	
 	public function request() {
 		try {
@@ -228,7 +169,7 @@ class PayPal extends AbstractPayment
 			$orderTotal->value = $getECResponse->GetExpressCheckoutDetailsResponseDetails->PaymentDetails[0]->OrderTotal->value;
 			
 			$itemDetails = new \PaymentDetailsItemType();
-			$itemDetails->Name = 'Predplatné - ' . $this->productName;
+			$itemDetails->Name = $this->productName;
 			$itemDetails->Amount = $orderTotal;
 			$itemDetails->Quantity = '1';
 			
