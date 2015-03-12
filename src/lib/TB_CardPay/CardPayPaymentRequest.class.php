@@ -29,14 +29,14 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
 
     public function __construct() {
         $this->readOnlyFields = array('SIGN');
-        $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'CS', 'RURL', 'IPC', 'NAME');
-        $this->optionalFields = array('PT', 'RSMS', 'REM', 'DESC', 'AREDIR', 'LANG');
+        $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'RURL', 'IPC', 'NAME');
+        $this->optionalFields = array('PT', 'CS', 'RSMS', 'REM', 'DESC', 'AREDIR', 'LANG');
 
         $this->PT = 'CardPay';
     }
 
     protected function getSignatureBase() {
-        $sb = "{$this->MID}{$this->AMT}{$this->CURR}{$this->VS}{$this->CS}{$this->RURL}{$this->IPC}{$this->NAME}";
+        $sb = "{$this->MID}{$this->AMT}{$this->CURR}{$this->VS}{$this->RURL}{$this->IPC}{$this->NAME}";
         return $sb;
     }
 
@@ -49,8 +49,6 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
             if (!preg_match('/^[0-9]+(\\.[0-9]+)?$/', $this->AMT)) throw new Exception('Amount is in wrong format');
             if (strlen($this->VS) > 10) throw new Exception('Variable Symbol is in wrong format');
             if (!preg_match('/^[0-9]+$/', $this->VS)) throw new Exception('Variable Symbol is in wrong format');
-            if (strlen($this->CS) > 4) throw new Exception('Constant Symbol is in wrong format');
-            if (!preg_match('/^[0-9]+$/', $this->CS)) throw new Exception('Constant Symbol is in wrong format');
             if (isempty($this->RURL)) throw new Exception('Return URL is in wrong format');
             $urlRestrictedChars = array('&', '?', ';', '=', '+', '%');
             foreach ($urlRestrictedChars as $char)
@@ -59,6 +57,8 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
             // nepovinne
             if (!isempty($this->PT))
                 if ($this->PT != 'CardPay') throw new Exception('Payment Type parameter must be "CardPay"');
+            if (!isempty($this->CS))
+                if (!preg_match('/^[0-9]{1,4}$/', $this->CS)) throw new Exception('Constant Symbol is in wrong format');
             if (!isempty($this->RSMS))
                 if (!preg_match('/^(0|\\+421)9[0-9]{2}( ?[0-9]{3}){2}$/', $this->RSMS)) throw new Exception('Return SMS in wrong format.');
             if (!isempty($this->REM))
@@ -95,7 +95,7 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
         $url .= "&CURR={$this->CURR}";
         $url .= "&VS={$this->VS}";
         $url .= "&CS={$this->CS}";
-        $url .= "&RURL=".urlencode($this->RURL);
+        $url .= "&RURL={$this->RURL}";
         $url .= "&IPC={$this->IPC}";
         $url .= "&NAME={$this->NAME}";
         $url .= "&SIGN={$this->SIGN}";
@@ -109,7 +109,7 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
         if (!isempty($this->AREDIR))
             $url .= "&AREDIR={$this->AREDIR}";
         if (!isempty($this->LANG))
-            $url .= "&LANG={$this->LANT}";
+            $url .= "&LANG={$this->LANG}";
 
         return $url;
     }
