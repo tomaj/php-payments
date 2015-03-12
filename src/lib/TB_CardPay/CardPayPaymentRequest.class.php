@@ -66,7 +66,7 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
             if (!isempty($this->DESC))
                 if (strlen($this->DESC) > 20) throw new Exception('Description is too long');
             if (!isempty($this->LANG)) {
-                $validLanguages = array('SK', 'EN', 'DE', 'RU');
+                $validLanguages = array('SK', 'EN', 'DE', 'HU', 'CZ', 'ES', 'FR', 'IT', 'PL');
                 if (!in_array($this->LANG, $validLanguages)) throw new Exception('Unknown language, known languages are: '.implode(',', $validLanguages));
             }
             return true;
