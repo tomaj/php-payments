@@ -94,12 +94,13 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
         $url .= "&AMT={$this->AMT}";
         $url .= "&CURR={$this->CURR}";
         $url .= "&VS={$this->VS}";
-        $url .= "&CS={$this->CS}";
         $url .= "&RURL={$this->RURL}";
         $url .= "&IPC={$this->IPC}";
         $url .= "&NAME={$this->NAME}";
         $url .= "&SIGN={$this->SIGN}";
 
+        if (!isempty($this->CS))
+            $url .= "&CS={$this->CS}";
         if (!isempty($this->RSMS))
             $url .= "&RSMS=".urlencode($this->RSMS);
         if (!isempty($this->REM))
