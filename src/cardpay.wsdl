@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TBTelePlatba"
+             targetNamespace="urn:tb_teleplatba:1.0"
+             xmlns:tns="urn:tb_teleplatba:1.0"
+             xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/"
+             xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:ns="urn:tb_teleplatba:1.0"
+             xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+             xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+             xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <schema targetNamespace="urn:tb_teleplatba:1.0"
+                xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:ns="urn:tb_teleplatba:1.0"
+                xmlns="http://www.w3.org/2001/XMLSchema"
+                elementFormDefault="unqualified"
+                attributeFormDefault="unqualified">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/"
+                    schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <xsd:simpleType name="CurrencyCodes">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="EUR"/>
+                    <xsd:enumeration value="USD"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <element name="TransactionRequest">
+                <complexType>
+                    <sequence>
+                        <element name="transactionId" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="referedCardId" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="merchantId" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="terminalId" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="amount" type="xsd:double" maxInclusive="99999" minInclusive="0.1" maxOccurs="1" nillable="false"/>
+                        <element name="vs" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="ss" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="cc" type="tns:CurrencyCodes" minOccurs="0" maxOccurs="1" default="EUR"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="TransactionResponse">
+                <complexType>
+                    <sequence>
+                        <element name="transactionId" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="transactionStatus" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="transactionApproval" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="cardData">
+                <complexType>
+                    <sequence>
+                        <element name="idOfCard" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="cryptoValue" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <complexType name="IdsList">
+                <sequence>
+                    <element name="id" type="xsd:long" maxOccurs="unbounded"/>
+                </sequence>
+            </complexType>
+
+            <complexType name="IdDatePair">
+                <sequence>
+                    <element name="idOfCard" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                    <element name="expirationDate" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+                </sequence>
+            </complexType>
+
+            <complexType name="dateList">
+                <sequence>
+                    <element name="pair" type="ns:IdDatePair" maxOccurs="unbounded"/>
+                </sequence>
+            </complexType>
+
+            <element name="ExceptionFault">
+                <complexType>
+                    <sequence>
+                        <element name="exceptionId" type="xsd:long" minOccurs="1" maxOccurs="1" nillable="false"/>
+                        <element name="exceptionStatus" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </types>
+
+    <message name="TransactionRequest">
+        <part name="parameters" element="ns:TransactionRequest"/>
+    </message>
+    <message name="TransactionResponse">
+        <part name="parameters" element="ns:TransactionResponse"/>
+    </message>
+    <message name="TransactionExceptionFault">
+        <part name="parameters" element="ns:ExceptionFault"/>
+    </message>
+    <message name="TransactionId">
+        <part name="tran_id" type="xsd:long"/>
+    </message>
+    <message name="IdOfCard">
+        <part name="card_id" type="xsd:long"/>
+    </message>
+    <message name="CardStatus">
+        <part name="status" type="xsd:long"/>
+    </message>
+    <message name="CardExceptionFault">
+        <part name="parameters" element="ns:ExceptionFault"/>
+    </message>
+    <message name="certDate">
+        <part name="certDate" type="xsd:dateTime"/>
+    </message>
+    <message name="Certificate">
+        <part name="body" type="xsd:string"/>
+    </message>
+    <message name="CertificateExceptionFault">
+        <part name="parameters" element="ns:ExceptionFault"/>
+    </message>
+    <message name="cardData">
+        <part name="parameters" element="ns:cardData"/>
+    </message>
+    <message name="registrationStatus">
+        <part name="status" type="xsd:long"/>
+    </message>
+    <message name="registerExceptionFault">
+        <part name="ex" element="ns:ExceptionFault"/>
+    </message>
+    <message name="expirationDate">
+        <part name="expDate" type="xsd:dateTime"/>
+    </message>
+    <message name="listOfIds">
+        <part name="ids" type="ns:IdsList"/>
+    </message>
+    <message name="expirationExceptionFault">
+        <part name="ex" element="ns:ExceptionFault"/>
+    </message>
+
+    <message name="listOfExpirationDates">
+        <part name="dates" type="ns:dateList"/>
+    </message>
+    <message name="expirationPerIdExceptionFault">
+        <part name="ex" element="ns:ExceptionFault"/>
+    </message>
+
+    <message name="cardNum">
+        <part name="cardNum" type="xsd:string"/>
+    </message>
+    <message name="cardId">
+        <part name="cardId" type="xsd:long"/>
+    </message>
+    <message name="idExceptionFault">
+        <part name="ex" element="ns:ExceptionFault"/>
+    </message>
+
+    <message name="unRegistrationStatus">
+        <part name="status" type="xsd:long"/>
+    </message>
+    <message name="unRegisterExceptionFault">
+        <part name="ex" element="ns:ExceptionFault"/>
+    </message>
+
+    <portType name="TBTelePlatbaType">
+        <operation name="doCardTransaction">
+            <documentation>execute Card/s transaction</documentation>
+            <input message="tns:TransactionRequest"/>
+            <output message="tns:TransactionResponse"/>
+            <fault name="TransactionException" message="tns:TransactionExceptionFault"/>
+        </operation>
+        <operation name="getTransactionStatus">
+            <documentation>get status of transaction/s</documentation>
+            <input message="tns:TransactionId"/>
+            <output message="tns:TransactionResponse"/>
+            <fault name="TransactionException" message="tns:TransactionExceptionFault"/>
+        </operation>
+        <operation name="checkCard">
+            <documentation>check Card identified by ID(not cardNum)</documentation>
+            <input message="tns:IdOfCard"/>
+            <output message="tns:CardStatus"/>
+            <fault name="CardException" message="tns:CardExceptionFault"/>
+        </operation>
+        <operation name="getCertificate">
+            <documentation>get last client certificate</documentation>
+            <input message="tns:certDate"/>
+            <output message="tns:Certificate"/>
+            <fault name="CertificateException" message="tns:CertificateExceptionFault"/>
+        </operation>
+        <operation name="registerCard">
+            <documentation>create new pair IdOfCard - crypt(cardId,expiration)</documentation>
+            <input message="tns:cardData"/>
+            <output message="tns:registrationStatus"/>
+            <fault name="registerException" message="tns:registerExceptionFault"/>
+        </operation>
+        <operation name="getListOfExpire">
+            <documentation>get list of card ID's expire to</documentation>
+            <input message="tns:expirationDate"/>
+            <output message="tns:listOfIds"/>
+            <fault name="expirationException" message="tns:expirationExceptionFault"/>
+        </operation>
+        <operation name="getListOfExpirePerId">
+            <documentation>get list expiration of card IDs</documentation>
+            <input  message="tns:listOfIds"/>
+            <output message="tns:listOfExpirationDates"/>
+            <fault name="expirationPerIdException" message="tns:expirationPerIdExceptionFault"/>
+        </operation>
+        <operation name="getIdFromCardNum">
+            <documentation>get card ID - stored in system - </documentation>
+            <input  message="tns:cardNum"/>
+            <output message="tns:cardId"/>
+            <fault name="idException" message="tns:idExceptionFault"/>
+        </operation>
+        <operation name="unRegisterCard">
+            <documentation>unregister Card ID</documentation>
+            <input message="tns:cardId"/>
+            <output message="tns:unRegistrationStatus"/>
+            <fault name="unRegisterException" message="tns:unRegisterExceptionFault"/>
+        </operation>
+    </portType>
+
+    <binding name="TBTelePlatbaBind" type="tns:TBTelePlatbaType">
+        <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="doCardTransaction">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="TransactionException">
+                <SOAP:fault name="TransactionException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="getTransactionStatus">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="TransactionException">
+                <SOAP:fault name="TransactionException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="checkCard">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="CardException">
+                <SOAP:fault name="CardException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="getCertificate">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="CertificateException">
+                <SOAP:fault name="CertificateException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="registerCard">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="registerException">
+                <SOAP:fault name="registerException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="getListOfExpire">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="expirationException">
+                <SOAP:fault name="expirationException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="getListOfExpirePerId">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="expirationPerIdException">
+                <SOAP:fault name="expirationPerIdException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="getIdFromCardNum">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="idException">
+                <SOAP:fault name="idException" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="unRegisterCard">
+            <SOAP:operation soapAction=""/>
+            <input>
+                <SOAP:body use="literal"/>
+            </input>
+            <output>
+                <SOAP:body use="literal"/>
+            </output>
+            <fault name="unRegisterException">
+                <SOAP:fault name="unRegisterException" use="literal"/>
+            </fault>
+        </operation>
+    </binding>
+
+    <service name="TBTelePlatba">
+        <documentation>TBTelePlatba Web Service - interface to TB Virtual Pos </documentation>
+        <port name="ssl" binding="tns:TBTelePlatbaBind">
+            <SOAP:address location="https://213.81.202.67:25001"/>
+        </port>
+    </service>
+
+</definitions>
