@@ -29,14 +29,14 @@ class CardPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPay
 
     public function __construct() {
         $this->readOnlyFields = array('SIGN');
-        $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'RURL', 'IPC', 'NAME');
-        $this->optionalFields = array('PT', 'CS', 'RSMS', 'REM', 'DESC', 'AREDIR', 'LANG');
+        $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'CS', 'RURL', 'IPC', 'NAME');
+        $this->optionalFields = array('PT', 'RSMS', 'REM', 'DESC', 'AREDIR', 'LANG');
 
         $this->PT = 'CardPay';
     }
 
     protected function getSignatureBase() {
-        $sb = "{$this->MID}{$this->AMT}{$this->CURR}{$this->VS}{$this->RURL}{$this->IPC}{$this->NAME}";
+        $sb = "{$this->MID}{$this->AMT}{$this->CURR}{$this->VS}{$this->CS}{$this->RURL}{$this->IPC}{$this->NAME}";
         return $sb;
     }
 
