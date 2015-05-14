@@ -18,29 +18,12 @@
     "require": {
         "php": ">=5.3.0",
         "ext-mcrypt": "*",
-	"paypal/merchant-sdk-php":"2.*"
+        "paypal/merchant-sdk-php":"2.*",
+        "fergusean/nusoap": "0.9.5"
     },
     "autoload": {
-        "classmap": {
-            "AbstractPayment": "src/",
-            "CardPay": "src/",
-            "Eplatba": "src/",
-            "PayPal": "src/",
-            "SporoPay": "src/",
-            "TatraPay": "src/",
-            "WebPay": "src/",
-            "SporoPayPaymentHttpResponse": "src/lib/SLSP_SporoPay/",
-            "SporoPayPaymentRequest": "src/lib/SLSP_SporoPay/",
-            "CardPayPaymentHttpResponse": "src/lib/TB_CardPay/",
-            "CardPayPaymentRequest": "src/lib/TB_CardPay/",
-            "TatraPayPaymentHttpResponse": "src/lib/TB_TatraPay/",
-            "TatraPayPaymentRequest": "src/lib/TB_TatraPay/",
-            "UniPlatbaPaymentHttpResponse": "src/lib/UCB_UniPlatba/",
-            "UniPlatbaPaymentRequest": "src/lib/UCB_UniPlatba/",
-            "VeBpayPaymentHttpResponse": "src/lib/VB_VeBpay/",
-            "VeBpayPaymentRequest": "src/lib/VB_VeBpay/",
-            "EPlatbaPaymentHttpResponse": "src/lib/VUB_EPlatba2_HMAC/",
-            "EPlatbaPaymentRequest": "src/lib/VUB_EPlatba2_HMAC/"
-        }
+        "classmap": [
+            "src/"
+        ]
     }
 }
