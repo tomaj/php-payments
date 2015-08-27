@@ -35,7 +35,8 @@ TB_COMFORTPAY_REDIRECTURLBASE - same usage as tatrapay
 TB_COMFORTPAY_TERMINALID - number from tatrabanka
 TB_COMFORTPAY_LOCAL_CERT_PATH - cert file path
 TB_COMFORTPAY_PASSPHRASE_PATH - path to file with passprase for cert
-TB_COMFORTPAY_REM - email aaddress
+TB_COMFORTPAY_REM - email address
+TB_COMFORTPAY_TEM - email address
 
 -----
 

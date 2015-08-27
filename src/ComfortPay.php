@@ -17,7 +17,7 @@ class ComfortPay extends AbstractPayment
 		$pr->NAME	=  $this->variableSymbol;
 		$pr->LANG	=  'sk';
 		$pr->TPAY	=  'Y';
-		$pr->TEM	=  'Y';
+		$pr->TEM	=  TB_COMFORTPAY_TEM;
 		$pr->REM	=  TB_COMFORTPAY_REM;
 		$pr->AREDIR	=  '1';
 
