@@ -69,7 +69,7 @@ class ComfortPayPaymentSoapRequest  {
         if (!is_array($ids)) {
             $ids = array($ids);
         }
-        $response = $this->client->__call('getListOfExpirePerId', array('listOfIds' => $ids));
+        $this->client->__call('getListOfExpirePerId', array('listOfIds' => $ids));
         $xmlResponse = $this->client->__getLastResponse();
 
         $xml = new SimpleXMLElement($xmlResponse);
@@ -90,7 +90,7 @@ class ComfortPayPaymentSoapRequest  {
      */
     public function getListOfExpire($expirationDate)
     {
-	$response = $this->client->__call('getListOfExpire', ["expirationDate" => $expirationDate]);
+        $this->client->__call('getListOfExpire', ["expirationDate" => $expirationDate]);
         $xmlResponse = $this->client->__getLastResponse();
 
         $xml = new SimpleXMLElement($xmlResponse);
