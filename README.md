@@ -28,15 +28,15 @@ ComforPay
 
 For using ComfortPay you need to define this constants:
 
-TB_COMFORTPAY_MID  - constant from tatrabanka (use like tatrapay)
-TB_COMFORTPAY_WS_MID - constant from tatrabanka
-TB_COMFORTPAY_SHAREDSECRET - constant from tatrabanka (use like tatrapay)
-TB_COMFORTPAY_REDIRECTURLBASE - same usage as tatrapay
-TB_COMFORTPAY_TERMINALID - number from tatrabanka
-TB_COMFORTPAY_LOCAL_CERT_PATH - cert file path
-TB_COMFORTPAY_PASSPHRASE_PATH - path to file with passprase for cert
-TB_COMFORTPAY_REM - email address
-TB_COMFORTPAY_TEM - email address
+ - TB_COMFORTPAY_MID  - constant from tatrabanka (use like tatrapay)
+ - TB_COMFORTPAY_WS_MID - constant from tatrabanka
+ - TB_COMFORTPAY_SHAREDSECRET - constant from tatrabanka (use like tatrapay)
+ - TB_COMFORTPAY_REDIRECTURLBASE - same usage as tatrapay
+ - TB_COMFORTPAY_TERMINALID - number from tatrabanka
+ - TB_COMFORTPAY_LOCAL_CERT_PATH - cert file path
+ - TB_COMFORTPAY_PASSPHRASE_PATH - path to file with passprase for cert
+ - TB_COMFORTPAY_REM - email address
+ - TB_COMFORTPAY_TEM - email address
 
 -----
 
