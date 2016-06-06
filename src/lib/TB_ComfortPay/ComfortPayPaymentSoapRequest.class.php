@@ -14,7 +14,15 @@ class ComfortPayPaymentSoapRequest  {
             'connection_timeout' => 5,
             'keep_alive' => false,
             'soap_version' => SOAP_1_2,
-            'cache_wsdl' => WSDL_CACHE_NONE
+            'cache_wsdl' => WSDL_CACHE_NONE,
+            'stream_context' => stream_context_create(
+                array(
+                    'ssl' => array(
+                        'verify_peer'       => false,
+                        'verify_peer_name'  => false,
+                    )
+                )
+            )
         );
 
         $this->client = new SoapClient(__DIR__ . '/../../cardpay.wsdl', $options);
@@ -37,7 +45,8 @@ class ComfortPayPaymentSoapRequest  {
         return $this->client->doCardTransaction($param);
     }
 
-    public function getTransactionStatus($transactionId){
+    public function getTransactionStatus($transactionId)
+    {
         $this->client->getTransactionStatus($transactionId);
     }
 
@@ -50,11 +59,13 @@ class ComfortPayPaymentSoapRequest  {
         return $response == 0 || $response == 3;
     }
 
-    public function getCertificate(){
+    public function getCertificate()
+    {
         throw new \Exception('Not yet implemented');
     }
 
-    public function registerCard(){
+    public function registerCard()
+    {
         throw new \Exception('Not yet implemented');
     }
 
@@ -100,11 +111,13 @@ class ComfortPayPaymentSoapRequest  {
         }, $result);
     }
 
-    public function getIdFromCardNum(){
+    public function getIdFromCardNum()
+    {
         throw new \Exception('Not yet implemented');
     }
 
-    public function unRegisterCard(){
+    public function unRegisterCard()
+    {
         throw new \Exception('Not yet implemented');
     }
 }
