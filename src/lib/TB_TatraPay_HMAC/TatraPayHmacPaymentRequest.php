@@ -29,14 +29,16 @@ class TatraPayHmacPaymentRequest extends EPaymentHmacSignedMessage implements IE
 
     public function __construct() {
         $this->readOnlyFields = array('SIGN');
-        $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'CS', 'RURL');
+        $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'CS', 'RURL', 'TIMESTAMP');
         $this->optionalFields = array('PT', 'SS', 'DESC', 'RSMS', 'REM', 'AREDIR', 'LANG');
 
         $this->PT = 'TatraPay';
+        $dateUtc = new \DateTime(null, new \DateTimeZone("UTC"));
+        $this->TIMESTAMP = $dateUtc->getTimestamp() * 1000;
     }
 
     protected function getSignatureBase() {
-        $sb = "{$this->MID}{$this->AMT}{$this->CURR}{$this->VS}{$this->SS}{$this->CS}{$this->RURL}";
+        $sb = "{$this->MID}{$this->AMT}{$this->CURR}{$this->VS}{$this->RURL}{$this->REM}{$this->TIMESTAMP}";
         return $sb;
     }
 
@@ -102,7 +104,8 @@ class TatraPayHmacPaymentRequest extends EPaymentHmacSignedMessage implements IE
             $url .= "&SS={$this->SS}";
         $url .= "&CS={$this->CS}";
         $url .= "&RURL=".urlencode($this->RURL);
-        $url .= "&SIGN={$this->SIGN}";
+        $url .= "&TIMESTAMP={$this->TIMESTAMP}";
+        $url .= "&HMAC={$this->SIGN}";
 
         if (!isempty($this->RSMS))
             $url .= "&RSMS=".urlencode($this->RSMS);

@@ -19,7 +19,7 @@
 */
 	require_once dirname(dirname(__FILE__)).'/EPaymentAes256SignedMessage.class.php';
 
-	class TatraPayHmacPaymentHttpResponse extends EPaymentAes256SignedMessage implements IEPaymentHttpPaymentResponse {
+	class TatraPayHmacPaymentHttpResponse extends EPaymentHmacSignedMessage implements IEPaymentHttpPaymentResponse {
 		public function __construct($fields = null) {
 			$this->readOnlyFields = array('SS', 'VS', 'RES', 'SIGN');
 
@@ -32,11 +32,11 @@
 			$this->fields['RES'] = isset($fields['RES']) ? $fields['RES'] : null;
 			$this->fields['SIGN'] = isset($fields['SIGN']) ? $fields['SIGN'] : null;
 		}
-		
+
 		protected function validateData() {
 			if (isempty($this->VS)) return false;
 			if (!($this->RES == "FAIL" || $this->RES == "OK" || $this->RES == "TOUT")) return false;
-			
+
 			return true;
 		}
 
