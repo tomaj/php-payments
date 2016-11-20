@@ -21,32 +21,42 @@
 
 	class TatraPayHmacPaymentHttpResponse extends EPaymentHmacSignedMessage implements IEPaymentHttpPaymentResponse {
 		public function __construct($fields = null) {
-			$this->readOnlyFields = array('SS', 'VS', 'RES', 'SIGN');
+			$this->readOnlyFields = array('SS', 'VS', 'RES', 'HMAC');
+            $this->requiredFields = array('MID', 'AMT', 'CURR', 'VS', 'TIMESTAMP');
 
-                        if ($fields == null) {
-                            $fields = $_GET;
-                        }
+            if ($fields == null) {
+                $fields = $_GET;
+            }
 
-                        $this->fields['SS'] = isset($fields['SS']) ? $fields['SS'] : null;
+            $this->fields['SS'] = isset($fields['SS']) ? $fields['SS'] : null;
 			$this->fields['VS'] = isset($fields['VS']) ? $fields['VS'] : null;
 			$this->fields['RES'] = isset($fields['RES']) ? $fields['RES'] : null;
-			$this->fields['SIGN'] = isset($fields['SIGN']) ? $fields['SIGN'] : null;
+			$this->fields['HMAC'] = isset($fields['HMAC']) ? $fields['HMAC'] : null;
+            $this->fields['AMT'] = isset($fields['AMT']) ? $fields['AMT'] : null;
+            $this->fields['CURR'] = isset($fields['CURR']) ? $fields['CURR'] : null;
+            $this->fields['VS'] = isset($fields['VS']) ? $fields['VS'] : null;
+            $this->fields['CS'] = isset($fields['CS']) ? $fields['CS'] : null;
+            $this->fields['TID'] = isset($fields['TID']) ? $fields['TID'] : null;
+            $this->fields['TIMESTAMP'] = isset($fields['TIMESTAMP']) ? $fields['TIMESTAMP'] : null;
 		}
 
 		protected function validateData() {
-			if (isempty($this->VS)) return false;
-			if (!($this->RES == "FAIL" || $this->RES == "OK" || $this->RES == "TOUT")) return false;
-
+			if (isempty($this->VS)) {
+			    return false;
+            }
+			if (!($this->RES == "FAIL" || $this->RES == "OK" || $this->RES == "TOUT")) {
+			    return false;
+            }
 			return true;
 		}
 
 		protected function getSignatureBase() {
-			return "{$this->VS}{$this->SS}{$this->RES}";
+			return "{$this->AMT}{$this->CURR}{$this->VS}{$this->SS}{$this->CS}{$this->RES}{$this->TID}{$this->TIMESTAMP}";
 		}
 
-    protected $isVerified = false;
+        protected $isVerified = false;
 		public function VerifySignature($password) {
-			if ($this->SIGN == $this->computeSign($password)) {
+			if ($this->HMAC == $this->computeSign($password)) {
 				$this->isVerified = true;
 				return true;
 			}

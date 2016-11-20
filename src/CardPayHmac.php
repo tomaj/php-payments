@@ -2,29 +2,32 @@
 
 namespace Tomaj\Epayment;
 
-class TatraPayHmac extends AbstractPayment
+class CardPayHmac extends AbstractPayment
 {
     public function request()
     {
-        $pr = new \TatraPayHmacPaymentRequest();
-
-        $pr->MID = TB_TATRAPAY_MID;
-        $pr->AMT = $this->amount; // suma (v €)
+        $pr = new \CardPayHmacPaymentRequest();
+        $pr->MID = TB_CARDPAY_MID;
+//        $pr->AMT = $this->amount; // suma (v €)
+        $pr->AMT = 1.0;
         $pr->VS = $this->variableSymbol; // variabilný symbol platby
-        $pr->SS = $this->specificSymbol;	// specificky symbol platby
         $pr->CS = "0308";
         $pr->CURR = "978";		// kod eura
         $pr->RURL = $this->returnUrl;
+        $pr->IPC = $_SERVER['REMOTE_ADDR'];
+
+        // toto mozno nebude moct byt stale rovnake, neviem, na DK tam nastavujeme username ale nemyslim si ze by to malo pri platbe nejaky vyznam
+        $pr->NAME = 'Default';
         // umozni automaticke presmerovanie usera z banky po 9 sekundach
         $pr->AREDIR = 1;
         // banka posle mail Appmu
         //$pr->REM = 'platby@App.sk';
-        $pr->SetRedirectUrlBase(TB_TATRAPAY_REDIRECTURLBASE);
+        $pr->SetRedirectUrlBase(TB_CARDPAY_REDIRECTURLBASE);
 
         if ($pr->Validate()) {
-            $pr->SignMessage(TB_TATRAPAY_SHAREDSECRET);
+            $pr->SignMessage(TB_CARDPAY_SHAREDSECRET);
             $paymentRequestUrl = $pr->GetRedirectUrl();
-            //header("Location: " . $paymentRequestUrl);
+            //	header("Location: " . $paymentRequestUrl);
             // pre pripad ze nas to nepresmeruje dame userovi moznost kliknut si priamo na link
             return $paymentRequestUrl;
         } else {
@@ -34,12 +37,9 @@ class TatraPayHmac extends AbstractPayment
 
     public function response()
     {
-        $response = new \TatraPayHmacPaymentHttpResponse();
-
-        $response->MID = TB_TATRAPAY_MID;
-
-        if ($response->Validate() && $response->VerifySignature(TB_TATRAPAY_SHAREDSECRET)) {
-            $result = $response->GetPaymentResponse();
+        $pres = new \CardPayHmacPaymentHttpResponse();
+        if ($pres->Validate() && $pres->VerifySignature(TB_CARDPAY_SHAREDSECRET)) {
+            $result = $pres->GetPaymentResponse();
             return $result;
         } else {
             return FALSE;

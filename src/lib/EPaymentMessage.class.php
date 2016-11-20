@@ -45,15 +45,17 @@ abstract class EPaymentMessage {
 
     protected function checkRequiredFields() {
         foreach ($this->requiredFields as $requiredField) {
-            if (!isset($this->fields[$requiredField]))
+            if (!isset($this->fields[$requiredField])) {
                 return false;
+            }
         }
         return true;
     }
 
     public function Validate() {
-        if (!$this->checkRequiredFields())
+        if (!$this->checkRequiredFields()) {
             return false;
+        }
         if ($this->validateData()) {
             $this->isValid = true;
             return true;
