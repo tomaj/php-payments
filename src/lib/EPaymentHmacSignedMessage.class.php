@@ -21,7 +21,9 @@ require_once dirname(__FILE__).'/EPaymentMessage.class.php';
 
 abstract class EPaymentHmacSignedMessage extends EPaymentMessage {
 		protected function getRawSharedSecret($sharedSecret) {
-				if (strlen($sharedSecret) == 128) {
+                if (strlen($sharedSecret) == 64) {
+                    return pack('A*', $sharedSecret);
+                } else if (strlen($sharedSecret) == 128) {
                     return pack('H*', $sharedSecret);
 				} else {
                     throw new Exception(__METHOD__.": Invalid shared secret format.");

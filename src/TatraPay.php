@@ -35,7 +35,7 @@ class TatraPay extends AbstractPayment
 
 	public function response()
 	{
-		$response = new \TatraPayHmacPaymentHttpResponse();
+		$response = new \TatraPayPaymentHttpResponse();
 		if ($response->Validate() && $response->VerifySignature(TB_TATRAPAY_SHAREDSECRET)) {
 			$result = $response->GetPaymentResponse();
 			return $result;
