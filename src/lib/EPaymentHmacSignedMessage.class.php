@@ -21,25 +21,23 @@ require_once dirname(__FILE__).'/EPaymentMessage.class.php';
 
 abstract class EPaymentHmacSignedMessage extends EPaymentMessage {
 		protected function getRawSharedSecret($sharedSecret) {
-				if (strlen($sharedSecret) == 64) {
-						return pack('A*', $sharedSecret);
-				} elseif (strlen($sharedSecret) == 128) {
-						return pack('A*', pack('H*', $sharedSecret));
+                if (strlen($sharedSecret) == 64) {
+                    return pack('A*', $sharedSecret);
+                } else if (strlen($sharedSecret) == 128) {
+                    return pack('H*', $sharedSecret);
 				} else {
-						throw new Exception(__METHOD__.": Invalid shared secret format.");
+                    throw new Exception(__METHOD__.": Invalid shared secret format.");
 				}
 		}
 		
     public function computeSign($sharedSecret) {
         if (!$this->isValid)
             throw new Exception(__METHOD__.": Message was not validated.");
-				
-				$signature = false;
         try {
             $signatureBase = $this->GetSignatureBase();
-						$rawSignatureBase = pack('A*', $signatureBase);
-						$rawSharedSecret = $this->getRawSharedSecret($sharedSecret);
-						$signature = strtoupper(hash_hmac('sha256', $rawSignatureBase, $rawSharedSecret, false));
+            $rawSharedSecret = $this->getRawSharedSecret($sharedSecret);
+
+            $signature = hash_hmac('sha256', $signatureBase, $rawSharedSecret);
         } catch (Exception $e) {
             return false;
         }
