@@ -5,7 +5,7 @@ require_once dirname(dirname(__FILE__)) . '/EPaymentAesSignedMessage.class.php';
 class CardPayHmacPaymentHttpResponse extends EPaymentHmacSignedMessage implements IEPaymentHttpPaymentResponse {
     public function __construct($fields = null)
     {
-        $this->readOnlyFields = array('SS', 'VS', 'AC', 'RES', 'HMAC', 'AMT', 'CURR', 'TRES', 'RC', 'CID', 'TID', 'TIMESTAMP');
+        $this->readOnlyFields = array('SS', 'VS', 'AC', 'RES', 'HMAC', 'AMT', 'CURR', 'TRES', 'RC', 'CID', 'TID', 'TIMESTAMP', 'CC');
 
         if ($fields == null)
         {
@@ -21,6 +21,7 @@ class CardPayHmacPaymentHttpResponse extends EPaymentHmacSignedMessage implement
         $this->fields['VS'] = isset($fields['VS']) ? $fields['VS'] : null;
         $this->fields['TRES'] = isset($fields['TRES']) ? $fields['TRES'] : null;
         $this->fields['RC'] = isset($fields['RC']) ? $fields['RC'] : null;
+        $this->fields['CC'] = isset($fields['CC']) ? $fields['CC'] : null;
 
         $this->fields['CID'] = isset($fields['CID']) ? $fields['CID'] : null;
         $this->fields['TID'] = isset($fields['TID']) ? $fields['TID'] : null;
@@ -42,19 +43,13 @@ class CardPayHmacPaymentHttpResponse extends EPaymentHmacSignedMessage implement
 
     protected function getSignatureBase()
     {
-        return "{$this->AMT}{$this->CURR}{$this->VS}{$this->RES}{$this->AC}{$this->RC}{$this->TID}{$this->TIMESTAMP}";
+        return "{$this->AMT}{$this->CURR}{$this->VS}{$this->RES}{$this->AC}{$this->CC}{$this->RC}{$this->TID}{$this->TIMESTAMP}";
     }
 
     protected $isVerified = false;
 
     public function VerifySignature($password)
     {
-//        dump($this);
-//        dump($this->HMAC);
-//        dump($this->getSignatureBase());
-//        dump($password);
-//        dump($this->computeSign($password));
-
         if ($this->HMAC == $this->computeSign($password))
         {
             $this->isVerified = true;
