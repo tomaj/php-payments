@@ -27,7 +27,7 @@ class ComfortPayHmacPaymentHttpResponse extends CardPayHmacPaymentHttpResponse i
     {
         parent::__construct($fields);
 
-        $this->readOnlyFields = array('SS', 'VS', 'AC', 'RES', 'SIGN', 'TRES', 'CID');
+        $this->readOnlyFields = array('SS', 'VS', 'AC', 'RES', 'HMAC', 'AMT', 'CURR', 'TRES', 'RC', 'CID', 'TID', 'TIMESTAMP', 'CC');
 
         if ($fields == null)
         {
@@ -36,11 +36,6 @@ class ComfortPayHmacPaymentHttpResponse extends CardPayHmacPaymentHttpResponse i
 
         $this->fields['TRES'] = isset($fields['TRES']) ? $fields['TRES'] : null;
         $this->fields['CID'] = isset($fields['CID']) ? $fields['CID'] : null;
-    }
-
-    protected function getSignatureBase()
-    {
-        return "{$this->VS}{$this->TRES}{$this->AC}{$this->CID}";
     }
 
     public function teleplatbaResult()
@@ -60,7 +55,7 @@ class ComfortPayHmacPaymentHttpResponse extends CardPayHmacPaymentHttpResponse i
     public function VerifySignature($password)
     {
 
-        if ($this->SIGN == $this->computeSign($password))
+        if ($this->HMAC == $this->computeSign($password))
         {
             $this->isVerified = true;
             return true;

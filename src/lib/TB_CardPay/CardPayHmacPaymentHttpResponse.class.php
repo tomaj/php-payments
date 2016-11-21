@@ -43,7 +43,7 @@ class CardPayHmacPaymentHttpResponse extends EPaymentHmacSignedMessage implement
 
     protected function getSignatureBase()
     {
-        return "{$this->AMT}{$this->CURR}{$this->VS}{$this->RES}{$this->AC}{$this->CC}{$this->RC}{$this->TID}{$this->TIMESTAMP}";
+        return "{$this->AMT}{$this->CURR}{$this->VS}{$this->RES}{$this->AC}{$this->TRES}{$this->CID}{$this->CC}{$this->RC}{$this->TID}{$this->TIMESTAMP}";
     }
 
     protected $isVerified = false;
