@@ -8,8 +8,7 @@ class CardPayHmac extends AbstractPayment
     {
         $pr = new \CardPayHmacPaymentRequest();
         $pr->MID = TB_CARDPAY_MID;
-//        $pr->AMT = $this->amount; // suma (v €)
-        $pr->AMT = 1.0;
+        $pr->AMT = $this->amount; // suma (v €)
         $pr->VS = $this->variableSymbol; // variabilný symbol platby
         $pr->CS = "0308";
         $pr->CURR = "978";		// kod eura
