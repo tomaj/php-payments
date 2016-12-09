@@ -30,6 +30,8 @@ class AbstractPayment
 	 */
 	protected $returnUrl;
 
+	protected $rem;
+
 	public function __construct($amount = NULL, $variableSymbol = NULL, $returnUrl = NULL)
 	{
 		$this->amount = $amount;
@@ -55,5 +57,10 @@ class AbstractPayment
 	public function setReturnUrl($returnUrl)
 	{
 		$this->returnUrl = $returnUrl;
+	}
+
+	public function setRem($rem)
+	{
+		$this->rem = $rem;
 	}
 }

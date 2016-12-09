@@ -19,8 +19,9 @@ class CardPay extends AbstractPayment
 		$pr->NAME = 'App.tv';
 		// umozni automaticke presmerovanie usera z banky po 9 sekundach
 		$pr->AREDIR = 1;
-		// banka posle mail Appmu
-		//$pr->REM = 'platby@App.sk';
+		if ($this->rem) {
+			$pr->REM = $this->rem;
+		}
 		$pr->SetRedirectUrlBase(TB_CARDPAY_REDIRECTURLBASE);
 
 		if ($pr->Validate()) {
