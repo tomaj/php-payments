@@ -94,11 +94,6 @@ class CardPayAesPaymentRequest extends EPaymentAesSignedMessage implements IEPay
                 throw new Exception('Return SMS in wrong format.');
             }
 
-            if (!empty($this->REM) && !preg_match('/^[0-9a-z_]+(\.[0-9a-z_]+)*@([12]?[0-9]{0,2}(\.[12]?[0-9]{0,2}){3}|([a-z][0-9a-z\-]*\.)+[a-z]{2,6})$/i', $this->REM))
-            {
-                throw new Exception('Return e-mail address in wrong format');
-            }
-
             if (!empty($this->DESC) && strlen($this->DESC) > 20)
             {
                 throw new Exception('Description is too long');

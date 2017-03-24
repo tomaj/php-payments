@@ -65,8 +65,6 @@ class TatraPayPaymentRequest extends EPaymentAes256SignedMessage implements IEPa
                 if ($this->PT != 'TatraPay') throw new Exception('Payment Type parameter must be "TatraPay"');
             if (!isempty($this->RSMS))
                 if (!preg_match('/^(0|\\+421)9[0-9]{2}( ?[0-9]{3}){2}$/', $this->RSMS)) throw new Exception('Return SMS in wrong format.');
-            if (!isempty($this->REM))
-                if (!preg_match('/^[0-9a-z_]+(\.[0-9a-z_]+)*@([12]?[0-9]{0,2}(\.[12]?[0-9]{0,2}){3}|([a-z][0-9a-z\-]*\.)+[a-z]{2,6})$/', $this->REM)) throw new Exception('Return e-mail address in wrong format');
             if (!isempty($this->DESC))
                 if (strlen($this->DESC) > 20) throw new Exception('Description is too long');
             if (!isempty($this->LANG)) {
