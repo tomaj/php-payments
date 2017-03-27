@@ -33,7 +33,7 @@ class TatraPayHmacPaymentRequest extends EPaymentHmacSignedMessage implements IE
         $this->optionalFields = array('PT', 'SS', 'DESC', 'RSMS', 'REM', 'AREDIR', 'LANG');
 
         $this->PT = 'TatraPay';
-        $this->TIMESTAMP =  date('dmYHis');
+        $this->TIMESTAMP = gmdate('dmYHis');
     }
 
     protected function getSignatureBase() {

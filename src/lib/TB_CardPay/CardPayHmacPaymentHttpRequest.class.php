@@ -33,7 +33,7 @@ class CardPayHmacPaymentRequest extends EPaymentHmacSignedMessage implements IEP
         $this->optionalFields = array('PT', 'RSMS', 'REM', 'DESC', 'AREDIR', 'LANG', 'CS');
 
         $this->PT = 'CardPay';
-        $this->TIMESTAMP = date('dmYHis');
+        $this->TIMESTAMP = gmdate('dmYHis');
     }
 
     protected function getSignatureBase() {
