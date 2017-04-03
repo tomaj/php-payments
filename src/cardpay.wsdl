@@ -339,10 +339,10 @@
         <documentation>TBTelePlatba Web Service - interface to TB Virtual Pos </documentation>
         <port name="ssl" binding="tns:TBTelePlatbaBind">
             <!-- Master server -->
-            <!-- <SOAP:address location="https://213.81.202.67:25001"/> -->
+            <SOAP:address location="https://213.81.202.67:25001"/> 
           
             <!-- Backup server -->
-            <SOAP:address location="https://213.215.88.67:25001"/>
+            <!-- <SOAP:address location="https://213.215.88.67:25001"/> -->
 
         </port>
     </service>
