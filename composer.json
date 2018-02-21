@@ -1,7 +1,7 @@
 {
     "name": "tomaj/php-payments",
     "description": "PHP ePayment library",
-    "license": "LGPL-2.0-or-later",
+    "license": "MIT",
     "keywords": ["payment","tatrapay","cardpay","webpay","paypal","sporopay","eplatba"],
     "authors": [
         {
